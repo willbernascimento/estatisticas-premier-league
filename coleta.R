@@ -18,32 +18,42 @@ chrome$open() # abrir navegador
 baseurl <- 'https://www.premierleague.com/stats/top/players/goals?se=210'
 chrome$navigate(baseurl)
 
-# botão estatísticas
-
-#bt_stats <- chrome$findElement(using = 'xpath', '//*[@id="mainContent"]/div/div/div[2]/div[1]/div[1]/ul/li[1]/a')
-#bt_stats$clickElement()
-
-# botao temporada
-
-#bt_temporada <- chrome$findElement(using = 'xpath', '//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[1]/ul/li[1]')
-#bt_temporada$clickElement()
-
 Sys.sleep(5)
 
 bt_cookies <- chrome$findElement(using = 'xpath','/html/body/section/div/div')
 bt_cookies$clickElement()
 
+
 dados1 <- NULL
 
-for (i in 1:100) {
+for (i in 2:12) {
+
+drop <- chrome$findElement(using = 'xpath', '//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[1]/div[2]')
+drop$clickElement()
+
+temporada <- chrome$findElement(using = 'xpath', paste0('//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[1]/ul/li[',i,']'))
+temporada$clickElement()
 
 cod_font <- htmlParse(chrome$getPageSource()[[1]], encoding = "utf-8")
 
-//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[1]#all
-//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[2]#goalkeeper
-//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[3]#defender
-//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[4]#midfield
-//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[5]#foward
+ano <- xpathSApply(cod_font, '//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[1]/div[2]/text()', xmlValue)
+ano
+
+Sys.sleep(3)
+
+for (i in 1:12) {
+
+#//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[1]#all
+#//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[2]#goalkeeper
+#//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[3]#defender
+#
+#//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[4]#midfield
+#//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[4]/ul/li[5]#foward
+
+#bt_aplicar <- chrome$findElement('xpath', '//*[@id="mainContent"]/div/div/div[2]/div[1]/section/div[6]')
+#bt_aplicar$clickElement()
+
+cod_font <- htmlParse(chrome$getPageSource()[[1]], encoding = "utf-8")
 
 rank <- xpathSApply(cod_font,  '//*[@id="mainContent"]/div/div/div[2]/div[1]/div[2]/table/tbody/tr/td[1]', xmlValue)
 rank
@@ -60,7 +70,7 @@ pais
 score <- xpathSApply(cod_font,  '//*[@id="mainContent"]/div/div/div[2]/div[1]/div[2]/table/tbody/tr/td[5]', xmlValue)
 score
 
-dados <- data.frame(rank, jogador, clube, pais, score, stringsAsFactors = F)
+dados <- data.frame(ano,rank, jogador,clube, pais, score, stringsAsFactors = F)
 
 dados1 <- rbind(dados1, dados)
 
@@ -70,7 +80,16 @@ bt_pagina <- chrome$findElement(using = 'xpath', '//*[@id="mainContent"]/div/div
 bt_pagina$clickElement()
 
 # volta pro cod_font
-Sys.sleep(5)
+Sys.sleep(3)
 print(i)
+webElem <- chrome$findElement("css", "body")
+webElem$sendKeysToElement(list(key = "home"))
+Sys.sleep(3)
+}
+
+webElem <- chrome$findElement("css", "body")
+webElem$sendKeysToElement(list(key = "home"))
+Sys.sleep(2)
+
 }
 
