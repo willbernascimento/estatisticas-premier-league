@@ -39,7 +39,7 @@ chrome <- remoteDriver(browserName="chrome", port=4567)
 
 ## ------------- TESTE DO AMBIENTE INICIAL  -----------
 
-# O resultado esperado dos comandos entre as linhas XX e XX é:
+# O resultado esperado dos comandos dentro deste bloco é:
 # 1: o navegador ser lançado e maximizado
 # 2: o navegador carregar a página de interesse.
 # 3: o botão de cookies ser apertado. 
@@ -63,11 +63,38 @@ Sys.sleep(5)
 bt_cookies <- chrome$findElement(using = 'xpath','/html/body/section/div/div')
 bt_cookies$clickElement()
 
+# Você já pode fechar o navegador 
+chrome$close()
+
 #------------------------------------------------------#
 
 
+## -------------------------------------------------------------------------- ##
+## ----------------------- BLOCO OPCIONAL ------------------------------------##
+
+# Eu prefiro realizar a coleta sem a exibição do navegador. Neste momento isso
+# só é possível utilizando a versão beta do chrome. Para funcionar é preciso 
+# executar as linhas abaixo: 
+
+
+capacidadesExtras <- list(
+  browserName = 'chrome',
+  chromeOptions = list(
+    args = c('--headless', '--disable-gpu', '--window-size=1280,800'),
+    binary = '/usr/bin/google-chrome-beta' # preciso indicar onde está o
+    # executável do chrome-beta
+  )
+)
+
+chrome <- remoteDriver(browserName="chrome", port=4567, 
+                       extraCapabilities = capacidadesExtras) 
+
+## -------------------------------------------------------------------------- ##
+
+
+
+
 ## ------------- INICIO DA COLETA ---------------------
-## ------------- Inicio do loop -------------
 
 # Vamos criar um loop simples para coletar as informações das temporadas
 # na página atual. 
