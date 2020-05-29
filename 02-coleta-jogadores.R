@@ -15,10 +15,8 @@
 
 library(RSelenium)
 library(XML)
-library(httr)
 library(wdman)
-library(electionsBR)
-library(dplyr)
+
 
 ## -------------- Ativação do Servidor -----------
 
@@ -39,23 +37,40 @@ chrome <- remoteDriver(browserName="chrome", port=4567)
 
 ## ----------------------------------------------------
 
-chrome$open() # abrir navegador
+## ------------- TESTE DO AMBIENTE INICIAL  -----------
+
+# O resultado esperado dos comandos entre as linhas XX e XX é:
+# 1: o navegador ser lançado e maximizado
+# 2: o navegador carregar a página de interesse.
+# 3: o botão de cookies ser apertado. 
+
+# abrir navegador
+chrome$open()
+chrome$maxWindowSize()  
 
 # indicar a URL
-
-baseurl <- 'https://www.premierleague.com/players'
+baseurl <- '<https://www.premierleague.com/players'
 chrome$navigate(baseurl)
 
-Sys.sleep(2)
+# tempo de carregamento da página
+
+Sys.sleep(5)
+
+# Vamos criar os botões para navergar na página solicitada
+
+# Clicar em aceitar os cookies
 
 bt_cookies <- chrome$findElement(using = 'xpath','/html/body/section/div/div')
 bt_cookies$clickElement()
 
+#------------------------------------------------------#
 
+
+## ------------- INICIO DA COLETA ---------------------
+## ------------- Inicio do loop -------------
 
 # Vamos criar um loop simples para coletar as informações das temporadas
 # na página atual. 
-
 # O indexador i representa a quantidade de temporadas que você vai coletar.
 # i = 1 é a temporada mais recente. Dentro do loop coleto a informação exata
 # da temporada.

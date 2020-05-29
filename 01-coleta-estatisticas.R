@@ -16,6 +16,7 @@
 library(RSelenium)
 library(XML)
 library(wdman)
+
 ## -------------- Ativação do Servidor -----------
 
 # criação de um servidor na máquina
@@ -31,7 +32,7 @@ cat(selServ)
 # você pode usar "firefox" ao invés de chrome
 # a porta utilizada pode ser encontrada no seu terminal com o cat(selServ)
 
-chrome <- remoteDriver(browserName="firefox", port=4567) 
+chrome <- remoteDriver(browserName="chrome", port=4567) 
 
 ## ----------------------------------------------------
 
